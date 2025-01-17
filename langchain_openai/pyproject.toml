@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Marcin Pilarczyk", email = "marcinpilarczyk@me.com"},
 ]
-dependencies = []
+dependencies = ["python-dotenv>=1.0.1", "langchain>=0.3.14", "langchain-openai>=0.3.0"]
 requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}
@@ -13,3 +13,8 @@ license = {text = "MIT"}
 
 [tool.pdm]
 distribution = false
+
+[dependency-groups]
+jupiter = [
+    "ipykernel>=6.29.5",
+]
