@@ -174,3 +174,4 @@ cython_debug/
 transcription.txt
 .DS_Store
 .python-version
+/temp
