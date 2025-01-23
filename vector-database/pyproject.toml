@@ -1,0 +1,15 @@
+[project]
+name = "vector-database"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Marcin Pilarczyk", email = "marcinpilarczyk@me.com"},
+]
+dependencies = ["openai>=1.59.9", "pandas>=2.2.3", "ipykernel>=6.29.5", "numpy>=2.0.2", "faiss-cpu>=1.9.0.post1"]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false

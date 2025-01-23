@@ -1,0 +1,15 @@
+[project]
+name = "chatbot"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Marcin Pilarczyk", email = "marcinpilarczyk@me.com"},
+]
+dependencies = ["langchain>=0.3.15", "langchain-ollama>=0.2.2", "ipykernel>=6.29.5"]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
