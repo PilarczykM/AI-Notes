@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Marcin Pilarczyk", email = "marcinpilarczyk@me.com"},
 ]
-dependencies = []
+dependencies = ["ipykernel>=6.29.5", "langchain-ollama>=0.2.2"]
 requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}
