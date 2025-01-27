@@ -1,0 +1,15 @@
+[project]
+name = "deepseek_task"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Marcin Pilarczyk", email = "marcinpilarczyk@me.com"},
+]
+dependencies = ["pandas>=2.2.3", "folium>=0.19.4", "ipykernel>=6.29.5"]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
