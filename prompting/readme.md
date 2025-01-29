@@ -13,3 +13,5 @@
 
   * [Zero-Shot Chain-of-Thought](./src/chain-of-thought-zero-shot.md)
   * [Manual Chain-of-Thought](./src/chain-of-thought-manual.md)
+* [Self-Consistency](./src/self-consistency.md)
+  > **Definition**: Technique where multiple reasoning paths are generated for a given problem, and the most consistent answer is selected. This helps improve accuracy by reducing errors from a single reasoning chain.
