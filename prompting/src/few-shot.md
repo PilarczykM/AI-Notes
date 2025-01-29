@@ -60,7 +60,7 @@ This is not the correct response, which not only highlights the limitations of t
 Let's try to add some examples to see if few-shot prompting improves the results.
 
 *Prompt:*
-```
+```py
 The odd numbers in this group add up to an even number: 4, 8, 9, 15, 12, 2, 1.
 Answer: The answer is False.
 
