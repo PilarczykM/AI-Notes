@@ -6,3 +6,10 @@
 * [Few-Shot Prompting](./src/few-shot.md)
 
   > **Definition**: Technique where a model is given a few examples of a task / word / meaning in the prompt before being asked to generate a response. This helps guide the model toward the desired output format and improves accuracy.
+
+* [Chain-of_thought (COT) Prompting](./src/chain-of-though.md)
+
+  > **Definition**: Technique where the model is encouraged to think through intermediate steps to solve a problem or reach a conclusion. It helps the model break down complex tasks and make its reasoning process more explicit, leading to better answers.
+
+  * [Zero-Shot Chain-of-Thought](./src/chain-of-thought-zero-shot.md)
+  * [Manual Chain-of-Thought](./src/chain-of-thought-manual.md)
