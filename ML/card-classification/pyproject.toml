@@ -1,0 +1,15 @@
+[project]
+name = "card-classification"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Marcin Pilarczyk", email = "marcinpilarczyk@me.com"},
+]
+dependencies = ["ipykernel>=6.29.5", "torch>=2.6.0", "torchvision>=0.21.0", "pandas>=2.2.3", "timm>=1.0.14", "matplotlib>=3.10.0"]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
