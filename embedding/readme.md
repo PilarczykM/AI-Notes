@@ -2,6 +2,8 @@
 
 ![Embedding Model Example](./images/embedding_proc.webp)
 
+[Models](./models.md)
+
 ## 📌 What Are Embeddings?
 
 Embeddings are dense, low-dimensional representations of high-dimensional data. They transform complex information into a form that is understandable for machine learning algorithms.
