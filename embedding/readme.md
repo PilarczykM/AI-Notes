@@ -24,12 +24,12 @@ Consider the words: **"queen," "king," "princess," "prince"**.
 ### One-hot Encoding:
 
 ```plaintext
-| Word       | One-hot Vector  |
-| ---------- | --------------- |
-| queen      | [1, 0, 0, 0]    |
-| king       | [0, 1, 0, 0]    |
-| princess   | [0, 0, 1, 0]    |
-| prince     | [0, 0, 0, 1]    |
+| Word     | One-hot Vector |
+| -------- | -------------- |
+| queen    | [1, 0, 0, 0]   |
+| king     | [0, 1, 0, 0]   |
+| princess | [0, 0, 1, 0]   |
+| prince   | [0, 0, 0, 1]   |
 ```
 
 This representation does not show relationships between words.
@@ -37,12 +37,12 @@ This representation does not show relationships between words.
 ### Embedding Representation:
 
 ```plaintext
-| Word       | [Gender, Age]  |
-| ---------- | -------------- |
-| queen      | [1, 0]         |
-| king       | [0, 0]         |
-| princess   | [1, 1]         |
-| prince     | [0, 1]         |
+| Word     | [Gender, Age] |
+| -------- | ------------- |
+| queen    | [1, 0]        |
+| king     | [0, 0]        |
+| princess | [1, 1]        |
+| prince   | [0, 1]        |
 ```
 
 - **Gender:** 1 = female, 0 = male
@@ -108,7 +108,8 @@ GloVe, developed by Stanford University, is another popular word embedding model
 - **Advantage:** Excels at capturing both local and global context, making it suitable for various NLP tasks.
 
 - **Example:** If "ice" and "snow" frequently co-occur, GloVe will create vectors placing them close in vector space, reflecting their semantic relationship.
-  ![GloVe](./images/glove.webp)
+
+![GloVe](./images/glove.webp)
 
 ---
 
