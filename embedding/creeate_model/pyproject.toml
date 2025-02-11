@@ -1,0 +1,15 @@
+[project]
+name = "creeate_model"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Marcin Pilarczyk", email = "marcinpilarczyk@me.com"},
+]
+dependencies = ["torch>=2.6.0", "torchvision>=0.21.0", "torchaudio>=2.6.0", "keras>=3.8.0", "ipykernel>=6.29.5", "matplotlib>=3.10.0", "pydot>=3.0.4"]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
