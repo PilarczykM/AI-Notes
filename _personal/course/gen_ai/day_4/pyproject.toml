@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Marcin Pilarczyk", email = "marcinpilarczyk@me.com"},
 ]
-dependencies = ["openai-whisper>=20240930", "ipykernel>=6.29.5"]
+dependencies = ["openai-whisper>=20240930", "ipykernel>=6.29.5", "transformers>=4.46.1", "soundfile>=0.13.1", "parler-tts @ git+https://github.com/huggingface/parler-tts.git"]
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT"}
