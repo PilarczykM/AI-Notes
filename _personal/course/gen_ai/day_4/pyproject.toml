@@ -1,0 +1,15 @@
+[project]
+name = "day_4"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Marcin Pilarczyk", email = "marcinpilarczyk@me.com"},
+]
+dependencies = ["openai-whisper>=20240930", "ipykernel>=6.29.5"]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
