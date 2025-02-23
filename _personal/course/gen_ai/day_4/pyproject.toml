@@ -1,0 +1,13 @@
+[project]
+name = "day_4"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [{ name = "Marcin Pilarczyk", email = "marcinpilarczyk@me.com" }]
+dependencies = ["langchain-huggingface>=0.1.2", "langchain-community>=0.3.18", "langchain-text-splitters>=0.3.6", "ipykernel>=6.29.5", "pypdf>=5.3.0", "langchain-ollama>=0.2.3", "kokoro>=0.3.4", "soundfile>=0.13.1", "pip>=25.0.1", "pydub>=0.25.1"]
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "MIT" }
+
+
+[tool.pdm]
+distribution = false
