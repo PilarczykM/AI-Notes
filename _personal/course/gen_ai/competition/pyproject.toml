@@ -1,0 +1,14 @@
+[project]
+name = "competition"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "ipykernel>=6.29.5",
+    "langchain-community>=0.3.19",
+    "langchain-ollama>=0.2.3",
+    "langchain-text-splitters>=0.3.6",
+    "pandas>=2.2.3",
+    "pypdf>=5.3.1",
+]
