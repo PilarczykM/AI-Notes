@@ -23,3 +23,14 @@ Details on vector databases, their importance in storing and querying embeddings
 Techniques and best practices for crafting effective prompts for LLMs to achieve desired outputs.
 
 ### [Machine Learning (ML)](./ML/readme.md)
+
+Machine Learning (ML) is a branch of artificial intelligence that enables systems to learn from data, identify patterns, and make decisions with minimal human intervention. It powers applications like recommendation systems, natural language processing, and autonomous systems.
+
+- **Supervised Learning**: Learning from labeled data (e.g., classification, regression).
+- **Unsupervised Learning**: Finding patterns in unlabeled data (e.g., clustering, anomaly detection).
+- **Reinforcement Learning**: Learning through rewards and penalties.
+
+### [Courses](./_personal/course/README.md)
+-   [GenAI](./_personal/course/gen_ai/README.md)
+    
+-   [Agents](./_personal/course/agents/README.md)
