@@ -1,0 +1,1 @@
+Check captures and how will work with headless = False
