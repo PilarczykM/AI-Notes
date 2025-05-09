@@ -445,6 +445,7 @@ dependencies = [
     { name = "litellm" },
     { name = "nest-asyncio" },
     { name = "playwright" },
+    { name = "playwright-stealth" },
     { name = "pydantic-ai" },
     { name = "pytest-playwright" },
     { name = "tavily-python" },
@@ -464,6 +465,7 @@ requires-dist = [
     { name = "litellm", specifier = ">=1.68.1" },
     { name = "nest-asyncio", specifier = ">=1.6.0" },
     { name = "playwright", specifier = ">=1.52.0" },
+    { name = "playwright-stealth", specifier = ">=1.0.6" },
     { name = "pydantic-ai", specifier = ">=0.1.10" },
     { name = "pytest-playwright", specifier = ">=0.7.0" },
     { name = "tavily-python", specifier = ">=0.7.2" },
@@ -2016,6 +2018,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/7a/81/a850dbc6bc2e1bd6cc87341e59c253269602352de83d34b00ea38cf410ee/playwright-1.52.0-py3-none-win32.whl", hash = "sha256:cd0bdf92df99db6237a99f828e80a6a50db6180ef8d5352fc9495df2c92f9971", size = 34839156, upload-time = "2025-04-30T09:28:52.768Z" },
     { url = "https://files.pythonhosted.org/packages/51/f3/cca2aa84eb28ea7d5b85d16caa92d62d18b6e83636e3d67957daca1ee4c7/playwright-1.52.0-py3-none-win_amd64.whl", hash = "sha256:dcbf75101eba3066b7521c6519de58721ea44379eb17a0dafa94f9f1b17f59e4", size = 34839164, upload-time = "2025-04-30T09:28:56.36Z" },
     { url = "https://files.pythonhosted.org/packages/b5/4f/71a8a873e8c3c3e2d3ec03a578e546f6875be8a76214d90219f752f827cd/playwright-1.52.0-py3-none-win_arm64.whl", hash = "sha256:9d0085b8de513de5fb50669f8e6677f0252ef95a9a1d2d23ccee9638e71e65cb", size = 30688972, upload-time = "2025-04-30T09:28:59.47Z" },
+]
+
+[[package]]
+name = "playwright-stealth"
+version = "1.0.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "playwright" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e5/dc/4e88b517e4c9cfb63f1b0b67d59adddcef2dc2fe0883b90e07119d15895a/playwright-stealth-1.0.6.tar.gz", hash = "sha256:b504d951d00fac755c7d13665a29611d415180510bd7d23f14ebc89439ba2043", size = 19984, upload-time = "2023-09-08T02:25:48.464Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/34/10/60981cb8d8e22487061b98a0803313c4fb519cc95ab1421516304a0cfcd0/playwright_stealth-1.0.6-py3-none-any.whl", hash = "sha256:b1b2bcf58eb6859aa53d42c49b91c4e27b74a6d13fc3d0c85eea513dd55efda3", size = 28288, upload-time = "2023-09-08T02:28:46.586Z" },
 ]
 
 [[package]]
