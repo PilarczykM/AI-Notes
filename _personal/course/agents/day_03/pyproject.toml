@@ -13,5 +13,11 @@ dependencies = [
     "langchain-ollama>=0.3.2",
     "langchain-openai>=0.3.16",
     "langgraph>=0.4.1",
+    "litellm>=1.68.1",
+    "nest-asyncio>=1.6.0",
+    "playwright>=1.52.0",
+    "pydantic-ai>=0.1.10",
+    "pytest-playwright>=0.7.0",
+    "tavily-python>=0.7.2",
     "wikipedia-api>=0.8.1",
 ]
