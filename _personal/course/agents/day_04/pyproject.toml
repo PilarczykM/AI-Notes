@@ -5,9 +5,13 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "datasets>=3.6.0",
     "ipykernel>=6.29.5",
+    "langchain>=0.3.25",
+    "langchain-community>=0.3.24",
     "llama-index>=0.12.35",
     "llama-index-embeddings-huggingface>=0.5.4",
     "llama-index-llms-ollama>=0.5.4",
     "llama-index-vector-stores-lancedb>=0.3.2",
+    "smolagents>=1.15.0",
 ]
