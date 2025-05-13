@@ -9,6 +9,7 @@ dependencies = [
     "ipykernel>=6.29.5",
     "langchain>=0.3.25",
     "langchain-community>=0.3.24",
+    "langchain-openai>=0.3.16",
     "llama-index>=0.12.35",
     "llama-index-embeddings-huggingface>=0.5.4",
     "llama-index-llms-ollama>=0.5.4",
