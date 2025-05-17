@@ -1,0 +1,11 @@
+[project]
+name = "day-06"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "autogen>=0.9.1.post0",
+    "matplotlib>=3.10.3",
+    "openai>=1.79.0",
+]
