@@ -1,0 +1,567 @@
+{
+  "name": "gmail label and notify",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        180
+      ],
+      "id": "0bc599d4-d4d0-447f-9e0f-1361453de3d5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "kxIFa6rpBq9mcCKu",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.Subject }}\n{{ $json.snippet }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Personal",
+              "description": "Prywatne wiadomości niezwiązane z pracą ani transakcjami. Obejmują komunikację z rodziną, znajomymi lub prywatne sprawy użytkownika, takie jak zaproszenia, gratulacje, potwierdzenia spotkań niezawodowych czy wiadomości od lekarza lub urzędów."
+            },
+            {
+              "category": "Recruitment",
+              "description": "Maile zawierające oferty zatrudnienia, propozycje rekrutacyjne lub wiadomości od rekruterów. Mogą pochodzić z platform takich jak LinkedIn, Indeed, Pracuj.pl, czy bezpośrednio od firm i agencji HR. Często zawierają słowa kluczowe takie jak \"oferta pracy\", \"stanowisko\", \"szukamy\", \"rekrutacja\", \"dołącz do zespołu\", itp."
+            },
+            {
+              "category": "Social",
+              "description": "Wiadomości pochodzące z mediów społecznościowych i platform komunikacyjnych, takich jak Facebook, Instagram, Twitter/X, TikTok czy LinkedIn (poza ofertami pracy). Obejmują powiadomienia o wiadomościach, komentarzach, oznaczeniach, polubieniach, czy zaproszeniach do znajomych."
+            },
+            {
+              "category": "Rachunki",
+              "description": "Wiadomości zawierające faktury, potwierdzenia płatności, przypomnienia o rachunkach i informacje o subskrypcjach. Mogą pochodzić od dostawców usług takich jak energia, internet, telefon, streaming, banki lub sklepy online. Często zawierają słowa typu „faktura”, „rachunek”, „opłata”, „do zapłaty” lub „potwierdzenie płatności”."
+            },
+            {
+              "category": "Spam",
+              "description": "Niechciane lub masowe wiadomości, często o charakterze reklamowym, podejrzanym albo automatycznym. Mogą zawierać obietnice szybkiego zysku, podejrzane linki, oferty bez związku z zainteresowaniami użytkownika, a także wiadomości phishingowe. Często wysyłane są z nieznanych lub nietypowych adresów e-mail i mogą być napisane w sposób nienaturalny lub zawierać błędy językowe."
+            },
+            {
+              "category": "Powiadomienia systemowe",
+              "description": "Wiadomości wysyłane automatycznie przez systemy, aplikacje lub serwisy internetowe, dotyczące bezpieczeństwa konta, zmian ustawień, logowań, aktualizacji regulaminów lub innych technicznych informacji. Pochodzą zazwyczaj od platform takich jak Google, Apple, Microsoft, banki, dostawcy usług czy systemy chmurowe. Przykłady: potwierdzenie aktywacji 2FA, alert o podejrzanym logowaniu, aktualizacja polityki prywatności."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "7b25f832-c561-4aab-a009-9cbf7e353881",
+      "name": "Mail Classifier"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_8750605238091174941"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        740,
+        -320
+      ],
+      "id": "a92203ad-34bc-4a1d-9697-11df8fce632c",
+      "name": "Personal label",
+      "webhookId": "481dd17b-afce-4b90-af9c-910fda0aea77",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Mggw1G27uvEQdQzf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_6040181302429558490"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        740,
+        540
+      ],
+      "id": "3d0144f9-0d76-43b5-8965-6918331f0739",
+      "name": "Powiadomienia systemowe label",
+      "webhookId": "481dd17b-afce-4b90-af9c-910fda0aea77",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Mggw1G27uvEQdQzf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_1125162703355131933"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        740,
+        -160
+      ],
+      "id": "fd6b458c-4a61-4278-b4d3-73430f065507",
+      "name": "Rekrutacja label",
+      "webhookId": "7f67f435-534a-4032-b61a-3815ee52e5ee",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Mggw1G27uvEQdQzf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        540
+      ],
+      "id": "1a6bb220-d446-4e45-bb25-400c3dc8da95",
+      "name": "Mark a message as read1",
+      "webhookId": "8dcbd826-cd38-400c-a082-706d794ec7f7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Mggw1G27uvEQdQzf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_8862858182055834463"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        740,
+        220
+      ],
+      "id": "df7b092e-7f08-41ea-a8fb-d1e1bee38213",
+      "name": "Social label",
+      "webhookId": "7f67f435-534a-4032-b61a-3815ee52e5ee",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Mggw1G27uvEQdQzf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_2619847819445000243"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        740,
+        40
+      ],
+      "id": "2ca214bc-7d71-4724-acee-f6c66bfb62a5",
+      "name": "Rachunki label",
+      "webhookId": "7f67f435-534a-4032-b61a-3815ee52e5ee",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Mggw1G27uvEQdQzf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        740,
+        380
+      ],
+      "id": "7e4d126d-5128-40b7-91c5-eac2d9fafe21",
+      "name": "Delete spam",
+      "webhookId": "1c48e359-dd0e-4dc8-b438-b0262d8e42bf",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Mggw1G27uvEQdQzf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Podsumuj poniższą wiadomość e-mail z ofertą pracy, wypisując najważniejsze informacje w uporządkowany sposób. Zwróć szczególną uwagę na poniższe elementy:\n\nTytuł emaila\n\nStanowisko\n\nWidełki płacowe – jeśli podano\n\nWymagane technologie lub narzędzia\n\nForma zatrudnienia – np. UoP, B2B\n\nTryb pracy – zdalna, hybrydowa, stacjonarna\n\nKrótki opis oferty – dla jakiej firmy, branża, typ projektów\n\nLink do oferty pracy – jeśli podano\n\nLink do strony firmy – jeśli podano\n\nMail:\nTytuł: {{ $json.subject }}\nContent as html:\n```html\n{{ $json.textAsHtml }}\n```\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1180,
+        -160
+      ],
+      "id": "bd95797d-8b5e-48fe-9df2-55e7f804ce06",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "kxIFa6rpBq9mcCKu",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "={{ $json.message.content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        -160
+      ],
+      "id": "af5ed0ca-307e-4f90-b633-af949fe8a076",
+      "name": "JobMessage",
+      "webhookId": "126654fa-1628-4b2b-9cea-2677f3dc9bf3",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "p6zW3PExdzirJ1nC",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        220
+      ],
+      "id": "562ac813-8fb4-4d92-a20f-01a95dbbbc99",
+      "name": "Mark a message as read",
+      "webhookId": "5aa0f203-41d3-41e5-b42e-1180e0742145",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Mggw1G27uvEQdQzf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "readStatus": "unread"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -20,
+        0
+      ],
+      "id": "f77025e7-0eb8-4cea-a816-89936dc8126c",
+      "name": "Get many messages",
+      "webhookId": "f925e328-649a-4c60-bf93-8af71b522c65",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Mggw1G27uvEQdQzf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -280,
+        0
+      ],
+      "id": "e36fd428-5267-4f13-859e-72f9bc4b1602",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        -160
+      ],
+      "id": "14cc2fab-dced-4f03-bc6a-de2929628c68",
+      "name": "Get a message",
+      "webhookId": "255a5217-48d1-4b21-ba46-cfa2a990061a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Mggw1G27uvEQdQzf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Runs Every 10 Minutes\nFetches all new email messages, then sends their subject lines and content snippets to an AI service for automatic categorization. This helps organize incoming emails based on their topic or intent.\n",
+        "height": 400,
+        "width": 860
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -100
+      ],
+      "id": "398d2e95-d84b-4b2a-b1e3-5c8ff7d4a7c8",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Mail Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail Classifier": {
+      "main": [
+        [
+          {
+            "node": "Personal label",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rekrutacja label",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Social label",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rachunki label",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Delete spam",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Powiadomienia systemowe label",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personal label": {
+      "main": [
+        []
+      ]
+    },
+    "Powiadomienia systemowe label": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rekrutacja label": {
+      "main": [
+        [
+          {
+            "node": "Get a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "JobMessage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JobMessage": {
+      "main": [
+        []
+      ]
+    },
+    "Social label": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Mail Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "35d8afe2-b492-47a4-aea6-1c173acc0396",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9c61eb8fbb4ec2c17477e59674f35095c80ce4159f01eb06ece65266a40aaa4c"
+  },
+  "id": "QTByQ7cOTbJFRJtL",
+  "tags": [
+    {
+      "name": "gmail",
+      "id": "OjF86izcAsaMBeNj",
+      "createdAt": "2025-06-26T04:39:28.523Z",
+      "updatedAt": "2025-06-26T04:39:28.523Z"
+    },
+    {
+      "name": "discord",
+      "id": "nG3fQDuzzdRbqfkv",
+      "createdAt": "2025-06-26T04:39:33.657Z",
+      "updatedAt": "2025-06-26T04:39:33.657Z"
+    },
+    {
+      "name": "openai",
+      "id": "FAjSxJz0hKSLQbVc",
+      "createdAt": "2025-06-26T04:39:38.333Z",
+      "updatedAt": "2025-06-26T04:39:38.333Z"
+    }
+  ]
+}
