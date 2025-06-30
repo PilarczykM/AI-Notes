@@ -1,0 +1,212 @@
+{
+  "name": "PocketLawyer",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pocket-lawyer",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c470575a-a74e-4c47-80dc-3242649d3d37",
+      "name": "Webhook",
+      "webhookId": "f4d922e3-03d1-4ad1-9cb9-762bd81767eb"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini-search-preview",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI-SEARCH-PREVIEW"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Jesteś ekspertem prawa polskiego.\nMasz odpowiedzieć na pytanie z kategorii {{ $json.body.category }}.\nSzukaj odpowiedzi wyłącznie na poniższych stronach:\n\nhttps://isap.sejm.gov.pl/\n\nhttps://dziennikustaw.gov.pl/DU\n\nhttps://www.gov.pl/\n\nhttps://uodo.gov.pl/\n\nNie uwzględniaj informacji z innych źródeł ani własnych przypuszczeń.\nOdpowiedź ma być rzeczowa, zgodna z treścią tych stron i zawierać źródła, z których pochodzi każda istotna informacja.\n\nZwróć format JSON:\n{\n  \"odpowiedz\": \"max 200 słów\",\n  \"źródło\": \"dokładny link do URL\"\n}\n\nPytanie: {{ $json.body.question }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        180,
+        0
+      ],
+      "id": "3efe4381-3649-414e-8b56-8aece7139601",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "kxIFa6rpBq9mcCKu",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer <<FIRECRAWL_API_KEY>>"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $json.message.annotations[0].url_citation.url }}\",\n  \"formats\": [\n    \"json\"\n  ],\n  \"jsonOptions\": {\n    \"schema\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"{{ $('Webhook').item.json.body.question }}\": {\n          \"type\": \"string\"\n        }\n      },\n      \"required\": [\n        \"{{ $('Webhook').item.json.body.question }}\"\n      ]\n    }\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        540,
+        0
+      ],
+      "id": "09d35c76-04c1-4f92-9506-88fe21e4d521",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "text": "=Oto pytanie: {{ $('Webhook').item.json.body.question }}\nOdpowiedź znajduje sie w OpenAI oraz Firecrawl\n\nOpenAI:\n{{ $('Message a model').item.json.message.content }}\n\nFirecrawl: {{ $json.data.json }}\n\nWyciągnij odpowiedź na moje pytanie.",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "Answer",
+              "description": "Wyciągnij odpowiedź na moje pytanie.",
+              "required": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        760,
+        0
+      ],
+      "id": "3e7a080b-f0d1-4255-adf1-9a39fbc4d18c",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        740,
+        160
+      ],
+      "id": "9bcad3f9-a7a8-420f-90b5-71933f2b7eb8",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "kxIFa6rpBq9mcCKu",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.output.Answer }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "3982152c-90fe-4016-8890-ea12350d64a4",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1c976046-9152-45f8-bab3-400a046bc313",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9c61eb8fbb4ec2c17477e59674f35095c80ce4159f01eb06ece65266a40aaa4c"
+  },
+  "id": "MHYxbuH4xRjLLXO4",
+  "tags": []
+}
