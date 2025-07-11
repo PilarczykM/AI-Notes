@@ -1,0 +1,502 @@
+---
+description: Generate detailed, step-by-step task lists for Python projects using outside-in TDD
+globs:
+alwaysApply: false
+---
+# Rule: Generating a Task List from a PRD
+
+## Goal
+
+To guide an AI assistant in creating a detailed, step-by-step task list in Markdown format based on an existing Product Requirements Document (PRD). The task list should guide a coding agent through implementation in a Python application following **outside-in TDD practices** that keep behavior authoritative through tests.
+
+## Output
+
+- **Format:** Markdown (`.md`)
+- **Location:** `${PROJECT_ROOT}/docs/tasks/`
+- **Filename:** `tasks-[prd-file-name].md` (e.g., `tasks-prd-vocabulary-import.md`)
+
+## Outside-In TDD for AI Agents
+
+### Core Principles
+
+**Behavior stays authoritative**: When tests exist up front, the AI's code must satisfy a spec you control, instead of the spec drifting to match whatever code it produces.
+
+**Safe iteration**: Generate one failing test at a time, run it locally, then ask for minimal code to make it pass. Small diffs are easier to review and rescue when AI hallucinates.
+
+**Better design**: Writing tests first forces clear seams (service classes, adapters, repositories, handlers) and discourages tight coupling across layers.
+
+**External services are easy to fake early**: AI can stub with `responses`, `httpx_mock`, or `pytest-httpx` and generate contract tests for adapters before any real API calls.
+
+### AI-Driven TDD Workflow (pytest)
+
+1. **Describe the feature** in plain language with user flow and edge cases
+2. **Generate high-level specs first**:
+   - End-to-end tests (using FastAPI TestClient or similar)
+   - API/Handler tests for request/response handling
+   - Contract tests for external service adapters
+   - Run them; they should fail with clear error messages
+3. **Iterate inside-out with failing tests**:
+   - Service adapter skeleton (stubbed HTTP calls) → pass contract tests
+   - Business logic classes/models → unit tests
+   - API handlers & JSON responses → integration tests
+   - Frontend components (if applicable) → system tests
+4. **After green, add edge-case tests**; refactor with confidence
+
+## Task Generation Configuration
+
+### Complexity Parameters
+
+**complexity_level**: `simple|moderate|complex`
+- **simple**: 3-5 parent tasks, basic CRUD operations
+- **moderate**: 5-8 parent tasks, external integrations, background processing
+- **complex**: 8-12 parent tasks, multiple integrations, advanced workflows
+
+**feature_scope**: `component|feature|epic`
+- **component**: Single module/class with focused responsibility
+- **feature**: Complete user-facing functionality with multiple components
+- **epic**: Multiple related features forming a complete subsystem
+
+**architecture_style**: `fastapi|django|flask|cli|package`
+- Determines framework-specific patterns and testing approaches
+
+## Process
+
+1. **Receive PRD Reference:** The user points the AI to a specific PRD file
+2. **Analyze PRD:** The AI reads and analyzes the functional requirements, user stories, and other sections of the specified PRD.
+3. **Assess Complexity:** Based on PRD analysis, determine appropriate complexity_level and feature_scope
+4. **Phase 1: Generate Parent Tasks:** Create the main, high-level tasks required to implement the feature. Present these tasks to the user in the specified format (without sub-tasks yet). Inform the user: "I have generated the high-level tasks based on the PRD. Ready to generate the sub-tasks? Respond with 'Go' to proceed."
+5. **Wait for Confirmation:** Pause and wait for the user to respond with "Go".
+6. **Phase 2: Generate Sub-Tasks:** Once confirmed, break down each parent task into smaller, actionable sub-tasks following **outside-in TDD principles**.
+7. **Identify Relevant Files:** List potential files to be created/modified, including test files that should be created **first**.
+8. **Generate Final Output:** Combine into final Markdown structure with emphasis on **outside-in TDD workflow**.
+9. **Save Task List:** Save the document as `tasks-[prd-file-name].md`.
+
+## Task Generation Best Practices
+
+### **Complete User Experience Coverage**
+- **API Integration**: Always include tasks for API endpoint creation and documentation
+- **Access Points**: Ensure users can reach new functionality through existing interfaces
+- **Error States**: Generate tasks for handling and displaying error conditions
+- **Logging**: Include comprehensive logging for debugging and monitoring
+- **Configuration**: Environment-specific settings and secrets management
+
+### **Architecture-Specific Patterns**
+
+#### **FastAPI Projects**
+- **Dependency Injection**: Use FastAPI's dependency system for services
+- **Pydantic Models**: Data validation and serialization
+- **Background Tasks**: Async processing with Celery or similar
+- **OpenAPI Documentation**: Auto-generated API docs
+
+#### **Django Projects**
+- **Models & Migrations**: Database schema and data modeling
+- **Views & Serializers**: DRF patterns for API development
+- **Admin Interface**: Django admin customization
+- **Management Commands**: Custom CLI commands
+
+#### **Flask Projects**
+- **Blueprints**: Modular application structure
+- **Flask-SQLAlchemy**: Database ORM integration
+- **Flask-Migrate**: Database migrations
+- **Application Factory**: Modular app creation
+
+#### **CLI Applications**
+- **Click Commands**: Command-line interface structure
+- **Configuration Files**: YAML/JSON/TOML config management
+- **Progress Indicators**: Rich/Click progress bars
+- **Error Handling**: User-friendly error messages
+
+#### **Python Packages**
+- **Setup.py/pyproject.toml**: Package configuration
+- **Entry Points**: CLI command registration
+- **Documentation**: Sphinx/MkDocs documentation
+- **Publishing**: PyPI package publishing
+
+### **Testing Strategy by Architecture**
+
+#### **Web Applications (FastAPI/Django/Flask)**
+```python
+# System Tests - End-to-end user workflows
+def test_complete_user_registration_flow():
+    # Test entire user journey
+
+# Integration Tests - Multiple components
+def test_api_endpoint_with_database():
+    # Test API + database + external service
+
+# Unit Tests - Individual components
+def test_user_service_create_user():
+    # Test isolated business logic
+```
+
+#### **CLI Applications**
+```python
+# Command Tests - CLI interface
+def test_cli_command_with_args():
+    # Test command-line interface
+
+# Integration Tests - File system operations
+def test_file_processor_with_real_files():
+    # Test file handling workflows
+
+# Unit Tests - Core logic
+def test_data_transformer():
+    # Test data transformation logic
+```
+
+### **External Service Integration Patterns**
+
+#### **HTTP Services**
+```python
+# Contract Tests
+def test_api_client_interface():
+    assert hasattr(ApiClient, 'get_user')
+    assert callable(getattr(ApiClient, 'get_user'))
+
+# Integration Tests with Mocking
+@responses.activate
+def test_user_service_fetch_user():
+    responses.add(responses.GET, 'https://api.example.com/users/1', 
+                  json={'id': 1, 'name': 'John'})
+    # Test service with mocked HTTP
+```
+
+#### **Database Services**
+```python
+# Repository Tests
+def test_user_repository_save():
+    # Test data persistence layer
+
+# Service Tests with Test Database
+def test_user_service_with_test_db():
+    # Test business logic with isolated database
+```
+
+### **Configuration Management Patterns**
+
+#### **Environment Configuration**
+```python
+# settings.py or config.py
+class Settings:
+    database_url: str = Field(..., env='DATABASE_URL')
+    api_key: str = Field(..., env='API_KEY')
+    debug: bool = Field(False, env='DEBUG')
+```
+
+#### **Testing Configuration**
+```python
+# conftest.py
+@pytest.fixture
+def test_settings():
+    return Settings(
+        database_url='sqlite:///:memory:',
+        api_key='test-key',
+        debug=True
+    )
+```
+
+## Output Format
+
+```markdown
+## Configuration Analysis
+
+**Complexity Level**: moderate
+**Feature Scope**: feature  
+**Architecture Style**: fastapi
+**Estimated Parent Tasks**: 6-8
+**Key Integrations**: external_api, database, background_jobs
+
+## Relevant Files
+
+### Test Files (Create First - TDD)
+- `tests/test_models/test_vocabulary_feature.py` - Model unit tests
+- `tests/test_services/test_vocabulary_service.py` - Service tests
+- `tests/test_api/test_vocabulary_endpoints.py` - API endpoint tests  
+- `tests/test_integration/test_vocabulary_workflow.py` - Integration tests
+- `tests/test_contracts/test_external_api_contract.py` - External service contract tests
+
+### Implementation Files  
+- `app/models/vocabulary_feature.py` - Data models with Pydantic
+- `app/services/vocabulary_service.py` - Business logic service
+- `app/api/vocabulary_endpoints.py` - FastAPI route handlers
+- `app/repositories/vocabulary_repository.py` - Data access layer
+- `app/adapters/external_api_adapter.py` - External service integration
+- `app/schemas/vocabulary_schemas.py` - Request/response schemas
+- `alembic/versions/xxx_add_vocabulary_tables.py` - Database migration
+- `app/config/settings.py` - Configuration management
+- `app/dependencies.py` - FastAPI dependency injection
+- `docs/api/vocabulary.md` - API documentation
+
+### Notes
+
+- **TDD Priority**: Always create test files before implementation files
+- **Test Commands**: Use `pytest tests/path/to/test.py` for individual test files
+- **Coverage**: Run `pytest --cov=app tests/` to verify test coverage
+- **Type Checking**: Use `mypy app/` for static type analysis
+- **Code Quality**: Use `black`, `isort`, and `flake8` for code formatting
+- **Dependencies**: Add new packages to `requirements.txt` or `pyproject.toml`
+- **Environment**: Use `.env` files for local development configuration
+- **Documentation**: Update API documentation for new endpoints
+- **Logging**: Use structured logging with `structlog` or Python's `logging`
+- **Error Handling**: Implement proper exception handling with custom exception classes
+- **Validation**: Use Pydantic for data validation and serialization
+- **Authentication**: Implement JWT or similar for API authentication if needed
+- **Background Jobs**: Use Celery, RQ, or similar for async task processing
+- **Database**: Use SQLAlchemy with Alembic for database management
+- **Testing**: Use pytest with fixtures, mocking, and parametrized tests
+- **CI/CD**: Include tasks for GitHub Actions or similar CI pipeline setup
+
+### Context Maintenance
+- Reference previous task outcomes in subsequent tasks
+- Include dependency checks between parent tasks  
+- Maintain consistent naming conventions across all generated files
+- Document assumptions and decisions for future reference
+
+### Adaptive Task Generation
+- If a sub-task reveals unexpected complexity, pause and ask for task subdivision
+- When external APIs don't match expected formats, generate additional investigation tasks
+- Allow for task reordering if dependencies are discovered during implementation
+- Include fallback strategies for external service failures
+
+### Enhanced Verification
+- Include smoke tests that verify the feature works end-to-end
+- Add performance benchmarks for data-heavy operations
+- Include security checks for authentication/authorization
+- Verify external service integration with real (but safe) API calls
+- Test error scenarios and recovery mechanisms
+
+## Tasks
+
+- [ ] 1. Parent Task Title
+
+  - [ ] 1.1. [Sub-task description 1.1]
+
+  - [ ] 1.2. [Sub-task description 1.2]
+
+  - [ ] 1.3. Verify by running `pytest tests/path/to/tests.py` or appropriate verification command.
+
+- [ ] 2. Parent Task Title
+
+  - [ ] 2.1. [Sub-task description 2.1]
+
+  - [ ] 2.2. Verify by running `pytest tests/path/to/tests.py` or appropriate command.
+
+- [ ] 3.0. Parent Task Title (may not require sub-tasks if purely structural or configuration)
+
+  - [ ] 3.1. Verify by running appropriate verification command.
+```
+
+## Python-Specific Considerations
+
+### **Testing Framework Integration**
+- **pytest**: Primary testing framework with fixtures and parametrization
+- **unittest**: Alternative for projects requiring standard library only
+- **Coverage**: `pytest-cov` for coverage reporting
+- **Mocking**: `unittest.mock`, `pytest-mock`, `responses`, `httpx-mock`
+
+### **Code Quality Tools**
+- **Type Checking**: `ruff` for static type analysis
+- **Formatting**: `ruff` for code formatting, `isort` for import sorting
+- **Linting**: `ruff` for code quality
+- **Security**: `bandit` for security issue detection
+
+### **Dependency Management**
+- **uv**: Modern dependency management with `pyproject.toml`
+
+### **Framework-Specific Patterns**
+
+#### **FastAPI Applications**
+```python
+# Dependency Injection
+def get_user_service() -> UserService:
+    return UserService(get_database())
+
+@app.get("/users/{user_id}")
+def get_user(user_id: int, service: UserService = Depends(get_user_service)):
+    return service.get_user(user_id)
+```
+
+#### **Django Applications**
+```python
+# Views and Serializers
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+```
+
+#### **Flask Applications**
+```python
+# Blueprints and Routes
+user_bp = Blueprint('users', __name__)
+
+@user_bp.route('/users/<int:user_id>')
+def get_user(user_id):
+    return UserService().get_user(user_id)
+```
+
+### **Database Integration Patterns**
+
+#### **SQLAlchemy (FastAPI/Flask)**
+```python
+# Models
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+
+# Repository Pattern
+class UserRepository:
+    def __init__(self, session: Session):
+        self.session = session
+    
+    def get_by_id(self, user_id: int) -> Optional[User]:
+        return self.session.query(User).filter(User.id == user_id).first()
+```
+
+#### **Django ORM**
+```python
+# Models
+class User(models.Model):
+    name = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'users'
+```
+
+## **Outside-In TDD Task Ordering Rules**
+
+**CRITICAL**: Always order sub-tasks to follow strict outside-in TDD principles:
+
+### ✅ **Correct Outside-In TDD Order:**
+```
+X.1 Write failing [high-level test] that describes expected behavior
+X.2 Run test to confirm it fails with clear error message  
+X.3 Write minimal code to make test pass (create classes/methods as needed)
+X.4 Run test to confirm it passes
+X.5 Write next failing test for edge case or next behavior
+X.6 Refactor when all tests pass
+```
+
+### **Specific Outside-In TDD Patterns by Component:**
+
+#### **API Endpoints (FastAPI/Django/Flask):**
+```
+1. Write endpoint test defining expected HTTP responses
+2. Run test (fails - no route/handler exists)
+3. Create minimal route handler with stub implementation
+4. Write tests for different status codes and response formats
+5. Implement handler logic to pass tests
+6. Add validation, authentication, and error handling tests
+```
+
+#### **Service Classes:**
+```
+1. Write service test defining expected public interface
+2. Run test (fails - no service exists)
+3. Create service class with method stubs
+4. Write unit tests for each method behavior
+5. Implement methods one test at a time
+6. Add validation and error handling tests
+```
+
+#### **External Service Integration:**
+```
+1. Write contract test defining expected adapter interface
+2. Run test (fails - no adapter exists)
+3. Create adapter skeleton with stubbed methods
+4. Write integration test with HTTP mocking (responses/httpx-mock)
+5. Implement adapter methods to pass contract test
+6. Add error handling and retry logic tests
+```
+
+#### **Database Operations:**
+```
+1. Write repository test defining expected data operations
+2. Run test (fails - no repository/model exists)
+3. Create model and repository with stub methods
+4. Write tests for CRUD operations
+5. Implement repository methods and database schema
+6. Add constraint and validation tests
+```
+
+#### **CLI Applications:**
+```
+1. Write command test defining expected CLI behavior
+2. Run test (fails - no command exists)
+3. Create command structure with Click/argparse
+4. Write tests for different argument combinations
+5. Implement command logic to pass tests
+6. Add error handling and help text tests
+```
+
+## **Quality Checks for Generated Tasks**
+
+Before finalizing, verify:
+
+1. **Outside-In TDD Compliance**: All tasks start with writing failing tests
+2. **Safe Iteration**: Tasks broken into small, testable increments
+3. **Test Layer Strategy**: Unit, integration, and system tests used appropriately
+4. **External Service Handling**: Contract tests and HTTP mocking included
+5. **Architecture Alignment**: Tasks match chosen Python framework patterns
+6. **Configuration Coverage**: Environment variables and settings management
+7. **Dependency Management**: New packages and virtual environment setup
+8. **Documentation**: API docs, README updates, and code comments
+9. **Error Scenarios**: Both success and failure paths covered
+10. **Performance Considerations**: Load testing and optimization tasks
+11. **Security**: Authentication, authorization, and input validation
+12. **Deployment**: Docker, CI/CD, and production readiness tasks
+
+## **AI Agent Implementation Guidelines**
+
+### **Follow Outside-In TDD Strictly:**
+1. Always write the failing test first
+2. Run the test to see it fail with a clear error message
+3. Write minimal code to make it pass (create classes/files as needed)
+4. Run the test again to confirm it passes
+5. Only then move to the next test/behavior
+
+### **Python-Specific Best Practices:**
+- Use type hints for better code documentation and IDE support
+- Follow PEP 8 style guidelines consistently
+- Use dataclasses or Pydantic models for data structures
+- Implement proper exception handling with custom exception classes
+- Use context managers for resource management
+- Follow the principle of least privilege for imports
+
+### **Testing Best Practices:**
+- Use pytest fixtures for test setup and teardown
+- Parametrize tests for multiple input scenarios
+- Mock external dependencies consistently
+- Use factory patterns for test data creation
+- Test both positive and negative scenarios
+- Include edge cases and boundary conditions
+
+### **Safe Iteration Pattern:**
+- Ask the human to run tests after each implementation
+- If a test fails unexpectedly, debug the test before changing the code
+- Use git commits for each green test cycle
+- If stuck, ask for clarification rather than guessing
+- Keep implementations simple - optimization comes later
+
+### **Verification Step Protocol:**
+- Always run the verification command at the end of each parent task
+- If verification fails, review all sub-tasks to identify issues
+- Fix any problems found during review
+- Re-run verification command
+- Only mark parent task complete when verification passes
+
+### **When in Doubt:**
+- Prioritize making tests pass over adding extra features
+- Ask for clarification if test requirements are ambiguous
+- Keep implementations simple and focused
+- Document assumptions and decisions for future reference
+
+## Interaction Model
+
+The process requires a pause after generating parent tasks to get user confirmation ("Go") before proceeding to generate detailed sub-tasks. This ensures alignment with user expectations before diving into implementation details.
+
+## Target Audience
+
+Assume the primary reader is a **coding AI agent** that will implement the feature following Python best practices and **outside-in TDD principles**. Include comprehensive guidance for successful test-driven development in Python environments.

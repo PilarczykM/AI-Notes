@@ -2,6 +2,8 @@
 description: "Generate a Product Requirements Document based on a user's feature prompt"
 globs: ["*.md"]
 alwaysApply: false
+version: "2.0"
+lastUpdated: "2025-07-11"
 ---
 
 # Rule: Generating a Product Requirements Document (PRD)
@@ -23,6 +25,9 @@ The AI should adapt its questions based on the prompt, but here are some common 
 
 *   **Problem/Goal:** "What problem does this feature solve for the user?" or "What is the main goal we want to achieve with this feature?"
 *   **Target User:** "Who is the primary user of this feature?"
+*   **Priority/Urgency:** "What's the priority level of this feature? (Critical/High/Medium/Low)"
+*   **Timeline:** "Are there any specific deadlines or launch targets?"
+*   **Dependencies:** "Does this feature depend on other features or external systems?"
 *   **Core Functionality:** "Can you describe the key actions a user should be able to perform with this feature?"
 *   **User Stories:** "Could you provide a few user stories? (e.g., As a [type of user], I want to [perform an action] so that [benefit].)"
 *   **Acceptance Criteria:** "How will we know when this feature is successfully implemented? What are the key success criteria?"
@@ -33,6 +38,7 @@ The AI should adapt its questions based on the prompt, but here are some common 
 *   **Technical Context:** "Is this feature primarily related to frontend (UI), backend (logic, APIs), or both?"
 *   **Layer-Specific Considerations:** "Are there any high-level system dependencies or constraints we should be aware of?"
 *   **System Impact:** "Does this feature affect system performance, security, or architecture?"
+*   **Accessibility:** "Are there specific accessibility requirements (WCAG compliance, screen reader support, etc.)?"
 
 ## PRD Structure
 
@@ -41,14 +47,29 @@ The generated PRD should include the following sections:
 1.  **Introduction/Overview:** Briefly describe the feature and the problem it solves. State the goal.
 2.  **Goals:** List the specific, measurable objectives for this feature.
 3.  **User Stories:** Detail the user narratives describing feature usage and benefits.
-4.  **Functional Requirements:** List the specific functionalities the feature must have. Use clear, concise language (e.g., "The system must allow users to upload a profile picture."). Number these requirements.
+4.  **Functional Requirements:** List the specific functionalities the feature must have. Use clear, concise language and number these requirements. Use MoSCoW prioritization where helpful:
+    - **Must Have:** Critical requirements
+    - **Should Have:** Important but not critical
+    - **Could Have:** Nice to have features
+    - **Won't Have:** Explicitly excluded features
 5.  **Non-Goals (Out of Scope):** Clearly state what this feature will *not* include to manage scope.
 6.  **Design Considerations (Optional):** Link to mockups, describe UI/UX requirements, or mention relevant components/styles if applicable.
-7.  **Technical Context (Optional, High-Level):**
-Describe any high-level constraints or dependencies relevant for scoping the project (e.g., "Must comply with GDPR"). Do not specify implementation details or technology choices.
-8.  **Success Metrics:** How will the success of this feature be measured? (e.g., "Increase user engagement by 10%", "Reduce support tickets related to X").
-9.  **Open Questions:** List any remaining questions or areas needing further clarification.
-10. **Changelog (Optional):** A simple table to document major updates to the PRD. Useful for tracking changes across discussions or team reviews. While Git history handles versioning, this section makes changes more visible for non-technical stakeholders.
+7.  **Technical Context (High-Level):**
+    - **System Integration:** How does this feature interact with existing systems?
+    - **Performance Requirements:** Any specific performance criteria?
+    - **Security Considerations:** Data protection, authentication requirements
+    - **Compliance Requirements:** GDPR, SOX, industry standards
+    - **Scalability Needs:** Expected user load, data volume
+8.  **Risk Assessment:** Identify potential risks and mitigation strategies:
+    - Technical risks (performance, scalability, complexity)
+    - Business risks (user adoption, market timing)
+    - Resource risks (team capacity, timeline)
+9.  **Success Metrics:** Include both quantitative and qualitative measures:
+    - **Quantitative:** Specific numbers (e.g., "Increase user engagement by 10%")
+    - **Qualitative:** User satisfaction, usability improvements
+    - **Timeline:** When metrics will be measured (e.g., "30 days post-launch")
+10. **Open Questions:** List any remaining questions or areas needing further clarification.
+11. **Changelog (Optional):** A simple table to document major updates to the PRD. While Git history handles versioning, this section makes changes more visible for non-technical stakeholders.
 
 Example format:
 ```markdown
@@ -60,6 +81,115 @@ Example format:
 | 2025-06-12 | Initial PRD draft                          | A. Johnson    |
 ```
 
+## Example PRD Template
+
+```markdown
+# 📋 PRD – Feature Name
+
+## 1. Introduction/Overview
+Brief description of the feature and the problem it solves.
+
+**Goal:** Clear, one-sentence goal statement.
+
+## 2. Goals
+- **Primary Goal:** Specific, measurable objective
+- **Secondary Goal:** Supporting objective
+
+## 3. User Stories
+### Epic 1: [Category Name]
+- **US-001**: As a [user type], I want to [action] so that [benefit]
+- **US-002**: As a [user type], I want to [action] so that [benefit]
+
+### Acceptance Criteria
+#### AC-001: [Feature Name]
+```gherkin
+Given [initial condition]
+When [action occurs]
+Then [expected result]
+And [additional verification]
+```
+
+## 4. Functional Requirements
+### Must Have (Priority: High)
+- **FR-001:** The system must [specific requirement]
+- **FR-002:** The system must [specific requirement]
+
+### Should Have (Priority: Medium)
+- **FR-003:** The system should [specific requirement]
+
+### Could Have (Priority: Low)
+- **FR-004:** The system could [specific requirement]
+
+## 5. Non-Goals (Out of Scope)
+- Feature will NOT include [specific exclusion]
+- Feature will NOT support [specific limitation]
+
+## 6. Design Considerations
+- **UI/UX Requirements:** Description of visual requirements
+- **Accessibility:** WCAG compliance level, screen reader support
+- **Mobile Responsiveness:** Requirements for different screen sizes
+
+## 7. Technical Context
+- **System Integration:** How feature interacts with existing systems
+- **Performance Requirements:** Response time < 100ms, etc.
+- **Security Considerations:** Authentication, data protection requirements
+- **Compliance Requirements:** GDPR, industry standards
+- **Scalability Needs:** Expected user load, data volume
+
+## 8. Risk Assessment
+| Risk Type | Description | Impact | Mitigation Strategy |
+|-----------|-------------|--------|-------------------|
+| Technical | Performance degradation | High | Load testing, caching |
+| Business | Low user adoption | Medium | User research, beta testing |
+| Resource | Timeline delays | High | Parallel development, MVP scope |
+
+## 9. Success Metrics
+### Quantitative
+- **Primary Metric:** [Specific number/percentage]
+- **Secondary Metric:** [Specific number/percentage]
+
+### Qualitative
+- User satisfaction score improvement
+- Reduction in support tickets
+
+### Timeline
+- Metrics will be measured 30 days post-launch
+
+## 10. Open Questions
+- [ ] Question 1: [Specific question needing clarification]
+- [ ] Question 2: [Specific question needing clarification]
+
+## 11. Changelog
+| Date       | Change Description        | Author    |
+|------------|---------------------------|-----------|
+| 2025-07-11 | Initial PRD draft        | AI Assistant |
+```
+
+## Example Requirements Format
+
+**Good Requirements:**
+- "The system must allow users to upload profile pictures in JPEG, PNG, or GIF format, with a maximum file size of 5MB."
+- "The login process must complete within 2 seconds for 95% of requests."
+- "The system must support concurrent access by up to 1000 users without performance degradation."
+
+**Poor Requirements:**
+- "Users should be able to upload pictures." (too vague)
+- "The system should be fast." (not measurable)
+- "It should work well." (not specific)
+
+## PRD Validation Checklist
+
+Before finalizing, ensure the PRD includes:
+- [ ] Clear problem statement and goals
+- [ ] At least 3 user stories with acceptance criteria
+- [ ] Numbered functional requirements with priorities
+- [ ] Defined success metrics with timeline
+- [ ] Explicit non-goals
+- [ ] Identified risks and mitigation strategies
+- [ ] Accessibility considerations (if applicable)
+- [ ] Technical context without implementation details
+- [ ] Open questions for further clarification
+
 ## Target Audience
 
 Assume the primary reader of the PRD is a **junior developer**. Therefore, requirements should be explicit, unambiguous, and avoid jargon where possible. Provide enough detail for them to understand the feature's purpose and core logic.
@@ -70,8 +200,15 @@ Assume the primary reader of the PRD is a **junior developer**. Therefore, requi
 *   **Location:** `/docs/`
 *   **Filename:** `prd-[feature-name].md`
 
-## Final instructions
+## Final Instructions
 
-1. Do NOT start implementing the PRD
-2. Make sure to ask the user clarifying questions
-3. Take the user's answers to the clarifying questions and improve the PRD
+1. **Do NOT start implementing the PRD**
+2. **Ask clarifying questions first** - minimum 5-7 questions based on the prompt
+3. **Iterate on requirements** - refine based on user feedback
+4. **Validate completeness** - use the validation checklist
+5. **Keep language simple** - write for junior developers
+6. **Include examples** - provide concrete examples where helpful
+7. **Focus on "what" and "why"** - avoid specifying "how" (implementation details)
+8. **Use consistent formatting** - follow the template structure
+9. **Prioritize requirements** - use MoSCoW or similar prioritization
+10. **Validate against user stories** - ensure all requirements trace back to user needs
